@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
             pre: null,
             active: false,
             moving: false
-
     }
 
+    let typeDrawing = ""
     const myCanvas = document.querySelector('#myCanvas')
     const context = myCanvas.getContext('2d')
 
@@ -25,22 +25,37 @@ document.addEventListener('DOMContentLoaded', ()=>{
         context.lineWidth = lineWidth.value
     }
 
-//const linha = {
-//    pos: {x: 350, y: 250},
-//    pre: {x:10,y:10}
-//}
-
     const drawLine = (line) => {
-
         context.beginPath()
         context.moveTo(line.pre.x,line.pre.y)
         context.lineTo(line.pos.x,line.pos.y)
         context.stroke()        
     }
 
+    const drawCircle = (line) => {
+        context.beginPath()
+        context.moveTo(line.pre.x,line.pre.y)
+        context.lineTo(line.pos.x,line.pos.y)
+        context.stroke()        
+    }
+
+    var fillCircle = function(x, y, radius){
+        context.beginPath();
+        context.arc(x, y, radius, 0, 2 * Math.PI, false);
+        context.fill();
+    }
+
     const cicle = () => {
         if(cursor.active && cursor.moving && cursor.pre){
-            drawLine({pos: cursor.pos, pre: cursor.pre})
+            if(!typeDrawing){
+                drawLine({pos: cursor.pos, pre: cursor.pre})    
+            }else if(typeDrawing == 'fillCircle'){
+                
+            }
+            const x = Math.pow(cursor.pos.x - cursor.pre.x)
+            const y = Math.pow(cursor.pos.y - cursor.pre.y)
+
+            console.log(x, y)
             cursor.moving = false
         }
         cursor.pre = {x: cursor.pos.x, y: cursor.pos.y}
@@ -65,8 +80,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 
     cicle()
-    
-
     
 
 })
