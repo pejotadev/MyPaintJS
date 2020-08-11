@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', ()=>{
 
+    const socket = io.connect();
+
     // Obj ponteiro
     const cursor = {
             pos: {x: 0, y: 0},
@@ -41,20 +43,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
         context.arc(x, y, radius, 0, 2 * Math.PI, false)
         context.fill()
     }
-    
-    // Ciclo de reload do canvas
-    const cycle = () => {
-        if(cursor.active && cursor.moving && cursor.pre){
-            drawLine({pos: cursor.pos, pre: cursor.pre})    
-            const x = Math.pow(cursor.pos.x - cursor.pre.x)
-            const y = Math.pow(cursor.pos.y - cursor.pre.y)
-
-            cursor.moving = false
-        }
-        cursor.pre = {x: cursor.pos.x, y: cursor.pos.y}
-
-        setTimeout(cycle,10)
-    }
 
     myCanvas.onmousedown = (event) => {
         cursor.active = true
@@ -69,7 +57,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
         cursor.pos.y = event.clientY
         cursor.moving = true
     }
+    
+    socket.on('draw', (line) => {
+        drawLine(line)
+    })
 
+    // Ciclo de reload do canvas
+    const cycle = () => {
+        if(cursor.active && cursor.moving && cursor.pre){
+            socket.emit('draw',{pos: cursor.pos, pre: cursor.pre})
+            // drawLine({pos: cursor.pos, pre: cursor.pre})    
+            cursor.moving = false
+        }
+        cursor.pre = {x: cursor.pos.x, y: cursor.pos.y}
+
+        setTimeout(cycle,10)
+    }
     cycle()
     
 
