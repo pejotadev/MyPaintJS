@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
     
     // Ciclo de reload do canvas
-    const cicle = () => {
+    const cycle = () => {
         if(cursor.active && cursor.moving && cursor.pre){
             drawLine({pos: cursor.pos, pre: cursor.pre})    
             const x = Math.pow(cursor.pos.x - cursor.pre.x)
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         }
         cursor.pre = {x: cursor.pos.x, y: cursor.pos.y}
 
-        setTimeout(cicle,10)
+        setTimeout(cycle,10)
     }
 
     myCanvas.onmousedown = (event) => {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         cursor.moving = true
     }
 
-    cicle()
+    cycle()
     
 
 })
