@@ -17,10 +17,10 @@ app.use(express.static(__dirname + '/public'))
 const history = []
 
 io.on('connection', (socket) => {
-    console.log('nova conexao')
+    console.log('nova conexão')
 
     history.forEach(line => {
-        //manda só pra essa conexao
+        //manda só pra essa conexão
         socket.emit('draw', line)
     })
 
